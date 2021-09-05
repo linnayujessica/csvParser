@@ -17,13 +17,13 @@ public class ParseService {
     public ParseService() {
     }
 
-    public List<CsvData> readCSV() throws IOException {
+    public List<CsvData> readCSV(String filePath) throws IOException {
         List<CsvData> csvData = new ArrayList<>();
-        BufferedReader br = new BufferedReader(new FileReader("src/main/resources/sample_data.csv"));
-        String line = br.readLine();
+        BufferedReader br = new BufferedReader(new FileReader(filePath));
+        String line = br.readLine(); // ignore the header
         while(!line.isEmpty() && (line = br.readLine()) != null) {
             String colum[] = line.split(";");
-            int messageId = Integer.parseInt(colum[0].replaceAll("^\"|\"$", ""));
+            int messageId = Integer.parseInt(colum[0].replaceAll("\"", ""));
             String body = colum[1].replaceAll("\"", "");
             String status = colum[2].replaceAll("\"", "");
             CsvData data = new CsvData(messageId, body, status);
@@ -32,6 +32,4 @@ public class ParseService {
 
         return csvData;
     }
-
-
 }
